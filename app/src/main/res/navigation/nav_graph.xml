@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/feature_1">
+
+    <fragment
+        android:id="@+id/feature_1"
+        android:name="io.catroll.iot.view.Feature1Fragment" />
+    <fragment
+        android:id="@+id/feature_2"
+        android:name="io.catroll.iot.view.Feature2Fragment" />
+    <fragment
+        android:id="@+id/feature_3"
+        android:name="io.catroll.iot.view.Feature4Fragment" />
+</navigation>
