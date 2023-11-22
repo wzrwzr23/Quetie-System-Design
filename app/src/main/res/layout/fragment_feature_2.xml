@@ -1,12 +1,38 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Spinner
+        android:id="@+id/stallSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="center|top"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/selectedStallTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/selected_stall_placeholder"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/predictedNumberTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:text="@string/predicted_number_0" />
 
     <Button
         android:id="@+id/chooseDateTimeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Choose Date and Time" />
+        android:layout_gravity="center|bottom"
+        android:text="@string/choose_date_and_time" />
 
-</FrameLayout>
+</LinearLayout>

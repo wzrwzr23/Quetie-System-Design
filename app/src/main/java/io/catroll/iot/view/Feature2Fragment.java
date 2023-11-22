@@ -6,8 +6,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -16,11 +19,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import java.util.Calendar;
+import java.util.Random;
 
 import io.catroll.iot.R;
 
 public class Feature2Fragment extends Fragment {
     private Button chooseDateTimeButton;
+    private TextView predictedNumberTextView;
+    private TextView selectedStallTextView;
+    private Spinner stallSpinner;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -28,7 +35,20 @@ public class Feature2Fragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_feature_2, container, false);
+
         chooseDateTimeButton = view.findViewById(R.id.chooseDateTimeButton);
+        stallSpinner = view.findViewById(R.id.stallSpinner);
+        predictedNumberTextView = view.findViewById(R.id.predictedNumberTextView);
+        selectedStallTextView = view.findViewById(R.id.selectedStallTextView); // Initialize the TextView for selected stall
+
+        // Set up the Spinner with your list of stalls
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.stall_list,
+                android.R.layout.simple_spinner_item
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        stallSpinner.setAdapter(adapter);
         chooseDateTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -37,6 +57,12 @@ public class Feature2Fragment extends Fragment {
         });
         return view;
     }
+    private void handleStallSelection() {
+        String selectedStall = "Selected Stall: " + stallSpinner.getSelectedItem().toString();
+        selectedStallTextView.setText(selectedStall);
+        selectedStallTextView.setVisibility(View.VISIBLE);
+    }
+
     private void showDateTimePicker() {
         final Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -71,17 +97,33 @@ public class Feature2Fragment extends Fragment {
                         );
                         timePickerDialog.show();
                     }
+                    private void handleDateTimeSelection(Calendar selectedDateTime) {
+                        String formattedDateTime = android.text.format.DateFormat.format("yyyy-MM-dd HH:mm", selectedDateTime).toString();
+                        Toast.makeText(requireContext(), "Selected Date and Time: " + formattedDateTime, Toast.LENGTH_LONG).show();
+
+                        // Assuming a method to calculate the predicted number based on the selectedDateTime
+                        int predictedNumber = calculatePredictedNumber(selectedDateTime);
+
+                        // Display the predicted number in the TextView
+                        String predictedNumString = "Predicted Number: "+ predictedNumber;
+                        predictedNumberTextView.setText(predictedNumString);
+                        predictedNumberTextView.setVisibility(View.VISIBLE);
+                    }
+                    // A placeholder method for calculating the predicted number (replace with logic)
+                    private int calculatePredictedNumber(Calendar selectedDateTime) {
+                        int min = 20;
+                        int max = 100;
+
+                        Random random = new Random();
+                        return random.nextInt((max - min) + 1) + min;
+                    }
                 },
                 year,
                 month,
                 day
         );
         datePickerDialog.show();
-    }
-
-    private void handleDateTimeSelection(Calendar selectedDateTime) {
-        String formattedDateTime = android.text.format.DateFormat.format("yyyy-MM-dd HH:mm", selectedDateTime).toString();
-        Toast.makeText(requireContext(), "Selected Date and Time: " + formattedDateTime, Toast.LENGTH_LONG).show();
+        handleStallSelection();
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
