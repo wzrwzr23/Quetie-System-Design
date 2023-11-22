@@ -1,5 +1,6 @@
 package io.catroll.iot.view;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,16 +88,27 @@ public class Feature1Fragment extends Fragment {
 
     public static String[] convertDateTimeArray(String[] inputArray) {
         // Define the input and output date time formats
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("E HH:mm");
+        DateTimeFormatter inputFormatter = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        }
+        DateTimeFormatter outputFormatter = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            outputFormatter = DateTimeFormatter.ofPattern("E HH:mm");
+        }
 
         // Create an array to hold the converted dates
         String[] outputArray = new String[inputArray.length];
 
         // Convert each date string in the input array
         for (int i = 0; i < inputArray.length; i++) {
-            LocalDateTime dateTime = LocalDateTime.parse(inputArray[i], inputFormatter);
-            outputArray[i] = dateTime.format(outputFormatter);
+            LocalDateTime dateTime = null;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                dateTime = LocalDateTime.parse(inputArray[i], inputFormatter);
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                outputArray[i] = dateTime.format(outputFormatter);
+            }
         }
 
         return outputArray;
