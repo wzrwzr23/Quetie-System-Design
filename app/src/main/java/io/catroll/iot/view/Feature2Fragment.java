@@ -27,7 +27,9 @@ public class Feature2Fragment extends Fragment {
     private Button chooseDateTimeButton;
     private TextView predictedNumberTextView;
     private TextView selectedStallTextView;
+    private TextView selectedDateTimeTextView; // Added TextView for selected date and time
     private Spinner stallSpinner;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -39,7 +41,8 @@ public class Feature2Fragment extends Fragment {
         chooseDateTimeButton = view.findViewById(R.id.chooseDateTimeButton);
         stallSpinner = view.findViewById(R.id.stallSpinner);
         predictedNumberTextView = view.findViewById(R.id.predictedNumberTextView);
-        selectedStallTextView = view.findViewById(R.id.selectedStallTextView); // Initialize the TextView for selected stall
+        selectedStallTextView = view.findViewById(R.id.selectedStallTextView);
+        selectedDateTimeTextView = view.findViewById(R.id.selectedDateTimeTextView); // Initialize the TextView for selected date and time
 
         // Set up the Spinner with your list of stalls
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -49,6 +52,7 @@ public class Feature2Fragment extends Fragment {
         );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         stallSpinner.setAdapter(adapter);
+
         chooseDateTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,10 +61,28 @@ public class Feature2Fragment extends Fragment {
         });
         return view;
     }
+
     private void handleStallSelection() {
         String selectedStall = "Selected Stall: " + stallSpinner.getSelectedItem().toString();
         selectedStallTextView.setText(selectedStall);
         selectedStallTextView.setVisibility(View.VISIBLE);
+    }
+
+    private void handleDateTimeSelection(Calendar selectedDateTime) {
+        String formattedDateTime = "Selected Date and Time: " + android.text.format.DateFormat.format("yyyy-MM-dd HH:mm", selectedDateTime).toString();
+//        Toast.makeText(requireContext(), formattedDateTime, Toast.LENGTH_LONG).show();
+
+        // Display the selected date and time in the TextView
+        selectedDateTimeTextView.setText(formattedDateTime);
+        selectedDateTimeTextView.setVisibility(View.VISIBLE);
+
+        // Assuming a method to calculate the predicted number based on the selectedDateTime
+        int predictedNumber = calculatePredictedNumber(selectedDateTime);
+
+        // Display the predicted number in the TextView
+        String predictedNumString = "Predicted Number: " + predictedNumber;
+        predictedNumberTextView.setText(predictedNumString);
+        predictedNumberTextView.setVisibility(View.VISIBLE);
     }
 
     private void showDateTimePicker() {
@@ -97,26 +119,6 @@ public class Feature2Fragment extends Fragment {
                         );
                         timePickerDialog.show();
                     }
-                    private void handleDateTimeSelection(Calendar selectedDateTime) {
-                        String formattedDateTime = android.text.format.DateFormat.format("yyyy-MM-dd HH:mm", selectedDateTime).toString();
-                        Toast.makeText(requireContext(), "Selected Date and Time: " + formattedDateTime, Toast.LENGTH_LONG).show();
-
-                        // Assuming a method to calculate the predicted number based on the selectedDateTime
-                        int predictedNumber = calculatePredictedNumber(selectedDateTime);
-
-                        // Display the predicted number in the TextView
-                        String predictedNumString = "Predicted Number: "+ predictedNumber;
-                        predictedNumberTextView.setText(predictedNumString);
-                        predictedNumberTextView.setVisibility(View.VISIBLE);
-                    }
-                    // A placeholder method for calculating the predicted number (replace with logic)
-                    private int calculatePredictedNumber(Calendar selectedDateTime) {
-                        int min = 20;
-                        int max = 100;
-
-                        Random random = new Random();
-                        return random.nextInt((max - min) + 1) + min;
-                    }
                 },
                 year,
                 month,
@@ -125,9 +127,13 @@ public class Feature2Fragment extends Fragment {
         datePickerDialog.show();
         handleStallSelection();
     }
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
+    // A placeholder method for calculating the predicted number (replace with logic)
+    private int calculatePredictedNumber(Calendar selectedDateTime) {
+        int min = 20;
+        int max = 100;
+
+        Random random = new Random();
+        return random.nextInt((max - min) + 1) + min;
     }
 }

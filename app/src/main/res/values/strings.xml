@@ -3,6 +3,7 @@
     <string name="predicted_number_0">Predicted Number: 0</string>
     <string name="choose_date_and_time">Choose Date and Time</string>
     <string name="selected_stall_placeholder">"Selected Stall is: "</string>
+    <string name="selected_date_time_placeholder">"Selected date and time is: "</string>
     <string-array name="stall_list">
         <item>Stall 1</item>
         <item>Stall 2</item>
