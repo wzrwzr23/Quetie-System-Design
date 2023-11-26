@@ -3,6 +3,8 @@ package io.catroll.iot.view;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -20,7 +25,11 @@ import java.util.List;
 
 import io.catroll.iot.R;
 import io.catroll.iot.data.Product;
+import io.catroll.iot.task.Config;
 import io.catroll.iot.view.adapter.CatalogueAdapter;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class Feature4Fragment extends Fragment {
 
@@ -35,23 +44,49 @@ public class Feature4Fragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_feature_4, container, false);
 
         List<Product> pList = new ArrayList<>();
-        List<String> dishes = new ArrayList<>();
-        dishes.add("babi"); dishes.add("anjing");
 
-        pList.add(new Product("1", loadDrawableFromAssets(view.getContext(), "1.jpg"), dishes, true));
-        pList.add(new Product("2", loadDrawableFromAssets(view.getContext(), "2.jpg"), dishes, false));
-        pList.add(new Product("3", loadDrawableFromAssets(view.getContext(), "3.png"), dishes, true));
-        pList.add(new Product("4", loadDrawableFromAssets(view.getContext(), "4.png"), dishes, false));
-        pList.add(new Product("5", loadDrawableFromAssets(view.getContext(), "5.png"), dishes, true));
-        pList.add(new Product("6", loadDrawableFromAssets(view.getContext(), "6.png"), dishes, false));
-        pList.add(new Product("7", loadDrawableFromAssets(view.getContext(), "7.png"), dishes, true));
-        pList.add(new Product("8", loadDrawableFromAssets(view.getContext(), "8.png"), dishes, false));
-        pList.add(new Product("9", loadDrawableFromAssets(view.getContext(), "9.png"), dishes, true));
-        pList.add(new Product("10", loadDrawableFromAssets(view.getContext(), "10.png"), dishes, false));
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        OkHttpClient client = new OkHttpClient();
+        String url = "http://" + Config.IP_PORT + "/feature4";
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        String[] v = null;
+        String[] m = null;
+        boolean[] a = null;
+        try (Response response = client.newCall(request).execute()) {
+            String s = response.body().string();
+            // Handle the response here
+            Log.d(TAG, "onCreateView: " + s);
+            JSONObject jsonObject = new JSONObject(s);
+            JSONArray vJson = jsonObject.getJSONArray("vendors");
+            JSONArray mJson = jsonObject.getJSONArray("menu");
+            JSONArray aJson = jsonObject.getJSONArray("availability");
+            v = new String[vJson.length()];
+            for (int i = 0; i < vJson.length(); i++) {
+                v[i] = vJson.getString(i);
+            }
+            m = new String[mJson.length()];
+            for (int i = 0; i < mJson.length(); i++) {
+                m[i] = mJson.getString(i);
+            }
+            a = new boolean[aJson.length()];
+            for (int i = 0; i < aJson.length(); i++) {
+                a[i] = aJson.getBoolean(i);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        for (int i=0; i<v.length; i++) {
+            pList.add(new Product(v[i], loadDrawableFromAssets(view.getContext(), (i+1)+".jpg"), m[i], a[i]));
+        }
+
 
         catalogueRecyclerView = view.findViewById(R.id.rv_catalogue);
         catalogueRecyclerView.setAdapter(new CatalogueAdapter(pList));
-        catalogueRecyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 3, GridLayoutManager.VERTICAL, false));
+        catalogueRecyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 2, GridLayoutManager.VERTICAL, false));
 
         return view;
     }
@@ -64,4 +99,6 @@ public class Feature4Fragment extends Fragment {
             return null;
         }
     }
+
+    public static final String TAG = "Feature4Fragment";
 }

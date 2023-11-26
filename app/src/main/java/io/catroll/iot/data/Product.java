@@ -7,7 +7,7 @@ import java.util.List;
 public class Product {
     private final String name;
     private final Drawable imageSrc;
-    private final List<String> dishes;
+    private final String dishes;
     private final boolean avail;
 
     public String getName() {
@@ -18,7 +18,7 @@ public class Product {
         return imageSrc;
     }
 
-    public List<String> getDishes() {
+    public String getDishes() {
         return dishes;
     }
 
@@ -26,7 +26,7 @@ public class Product {
         return avail;
     }
 
-    public Product(String name, Drawable imageSrc, List<String> dishes, boolean avail) {
+    public Product(String name, Drawable imageSrc, String dishes, boolean avail) {
         this.name = name;
         this.imageSrc = imageSrc;
         this.dishes = dishes;

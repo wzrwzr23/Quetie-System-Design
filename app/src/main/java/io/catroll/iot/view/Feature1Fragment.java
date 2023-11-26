@@ -2,6 +2,8 @@ package io.catroll.iot.view;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +20,20 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.catroll.iot.R;
+import io.catroll.iot.task.Config;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class Feature1Fragment extends Fragment {
 
@@ -39,8 +49,33 @@ public class Feature1Fragment extends Fragment {
 
         chart.getDescription().setEnabled(false);
 
-        String[] dates = {"2023-11-21 13:00", "2023-11-22 15:00", "2023-11-23 17:00", "2023-11-24 14:00", "2023-11-25 16:00"};
-        int[] people = {50, 60, 70, 55, 65};
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        OkHttpClient client = new OkHttpClient();
+        String url = "http://" + Config.IP_PORT + "/feature1?date=2020-1-19";
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        String[] dates = null;
+        int[] people = null;
+        try (Response response = client.newCall(request).execute()) {
+            String s = response.body().string();
+            // Handle the response here
+            Log.d(TAG, "onCreateView: " + s);
+            JSONObject jsonObject = new JSONObject(s);
+            JSONArray datesJson = jsonObject.getJSONArray("dates");
+            JSONArray ppl = jsonObject.getJSONArray("people");
+            dates = new String[datesJson.length()];
+            for (int i = 0; i < datesJson.length(); i++) {
+                dates[i] = datesJson.getString(i);
+            }
+            people = new int[ppl.length()];
+            for (int i = 0; i < ppl.length(); i++) {
+                people[i] = ppl.getInt(i);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         String[] formattedDates = convertDateTimeArray(dates);
 
@@ -70,7 +105,7 @@ public class Feature1Fragment extends Fragment {
             xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
             xAxis.setAxisMinimum(0);
             xAxis.setAxisMaximum(dates.length - 1);
-            xAxis.setGranularity(1);
+            xAxis.setLabelCount(4, true);
         }
 
         YAxis yAxis;

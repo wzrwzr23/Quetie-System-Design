@@ -75,7 +75,7 @@ public class CatalogueAdapter extends
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
             );
             TextView textView = dialog.findViewById(R.id.text_dishes);
-            textView.setText(String.join(", ", product.getDishes()));
+            textView.setText(product.getDishes());
             dialog.show();
         });
     }
