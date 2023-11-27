@@ -16,7 +16,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:paddingVertical="20dp"
-            android:text="Traffic"
+            android:text="TRAFFIC"
             android:textSize="28sp"
             android:layout_gravity="center" />
 
@@ -25,6 +25,31 @@
             android:id="@+id/line_chart"
             android:layout_width="match_parent"
             android:layout_height="250dp"/>
+
+        <TextView
+            android:id="@+id/txt_nop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/line_chart"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:text="NUMBER OF PEOPLE"
+            android:textSize="28sp"
+            android:layout_gravity="center" />
+
+
+        <TextView
+            android:id="@+id/nop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/txt_nop"
+            android:layout_marginTop="15dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:text="8964"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:layout_gravity="center" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

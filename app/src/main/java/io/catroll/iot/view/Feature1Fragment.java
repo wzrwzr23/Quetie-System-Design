@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -74,7 +75,7 @@ public class Feature1Fragment extends Fragment {
                 people[i] = ppl.getInt(i);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "onCreateView: ", e);
         }
 
         String[] formattedDates = convertDateTimeArray(dates);
@@ -118,6 +119,31 @@ public class Feature1Fragment extends Fragment {
 
         chart.invalidate(); // Refresh the chart
 
+        TextView nop = view.findViewById(R.id.nop);
+        new Thread(() -> {
+            while (true) {
+                String nopUrl = "http://" + Config.IP_PORT + "/nop";
+                Request nopRequest = new Request.Builder()
+                        .url(nopUrl)
+                        .build();
+
+                try (Response response = client.newCall(nopRequest).execute()) {
+                    String s = response.body().string();
+                    // Handle the response here
+                    getActivity().runOnUiThread(() -> {
+                        nop.setText(s);
+                    });
+                } catch (Exception e) {
+                    Log.e(TAG, "onCreateView: ", e);
+                }
+
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    Log.e(TAG, "onCreateView: ", e);
+                }
+            }
+        }).start();
         return view;
     }
 
