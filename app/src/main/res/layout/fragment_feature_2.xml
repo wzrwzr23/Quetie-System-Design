@@ -2,15 +2,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@android:color/background_light">
 
     <Spinner
         android:id="@+id/stallSpinner"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_gravity="center|top"
+        android:layout_gravity="center"
         android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp"/>
+        android:background="@drawable/spinner_background"
+        android:spinnerMode="dropdown" />
 
     <TextView
         android:id="@+id/selectedStallTextView"
@@ -18,29 +21,50 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/selected_stall_placeholder"
-        android:visibility="gone" />
-
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"/>
+<!--    android:visibility="gone"-->
     <TextView
         android:id="@+id/selectedDateTimeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/selected_date_time_placeholder"
-        android:visibility="gone" />
-
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"/>
+<!--    android:visibility="gone"-->
     <TextView
         android:id="@+id/predictedNumberTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="gone"
-        android:text="@string/predicted_number_0" />
+        android:text="@string/predicted_number_0"
+        android:textColor="@color/colorAccent"
+        android:textSize="20sp"
+        android:layout_marginTop="16dp"/>
+<!--    android:visibility="gone"-->
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/> <!-- Add a space to push the button to the bottom -->
 
     <Button
         android:id="@+id/chooseDateTimeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom"
-        android:text="@string/choose_date_and_time" />
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:text="@string/choose_date_and_time"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button_background"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:textSize="16sp"/>
 
 </LinearLayout>

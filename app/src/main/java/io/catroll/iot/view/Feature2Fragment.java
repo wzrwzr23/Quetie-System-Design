@@ -107,6 +107,9 @@ public class Feature2Fragment extends Fragment {
                                 new TimePickerDialog.OnTimeSetListener() {
                                     @Override
                                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                        // Round the minute to the nearest 15-minute interval
+                                        minute = (minute / 15) * 15;
+
                                         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                                         calendar.set(Calendar.MINUTE, minute);
                                         handleDateTimeSelection(calendar);
@@ -117,6 +120,7 @@ public class Feature2Fragment extends Fragment {
                                 true
 
                         );
+
                         timePickerDialog.show();
                     }
                 },
