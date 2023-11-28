@@ -3,6 +3,7 @@ package io.catroll.iot.view;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import java.util.Calendar;
 import java.util.Random;
 
 import io.catroll.iot.R;
+import io.catroll.iot.task.Config;
 
 public class Feature2Fragment extends Fragment {
     private Button chooseDateTimeButton;
@@ -83,7 +85,6 @@ public class Feature2Fragment extends Fragment {
 
         // Assuming a method to calculate the predicted number based on the selectedDateTime
         String predictedNumber = calculatePredictedNumber(android.text.format.DateFormat.format("yyyy-MM-dd HH:mm", selectedDateTime).toString().substring(11));
-
         // Display the predicted number in the TextView
         String predictedNumString = "Predicted Number: " + predictedNumber;
         predictedNumberTextView.setText(predictedNumString);
@@ -137,11 +138,10 @@ public class Feature2Fragment extends Fragment {
         handleStallSelection();
     }
 
-    // A placeholder method for calculating the predicted number (replace with logic)
     private String calculatePredictedNumber(String selectedDateTime) {
         try {
             // Specify the URL you want to send the GET request to
-            String url = "http://localhost:8000/feature2?time_param="+selectedDateTime;
+            String url = "http://" + Config.IP_PORT + "/feature2?time_param="+selectedDateTime;
 
             // Create a URL object
             URL obj = new URL(url);
@@ -154,7 +154,7 @@ public class Feature2Fragment extends Fragment {
 
             // Get the response code
             int responseCode = connection.getResponseCode();
-            System.out.println("Response Code: " + responseCode);
+            Log.d("response_code", "Response Code: " + responseCode);
 
             // Read the response from the server
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
