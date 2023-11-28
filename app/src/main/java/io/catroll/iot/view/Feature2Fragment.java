@@ -18,6 +18,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.Random;
 
@@ -77,7 +82,7 @@ public class Feature2Fragment extends Fragment {
         selectedDateTimeTextView.setVisibility(View.VISIBLE);
 
         // Assuming a method to calculate the predicted number based on the selectedDateTime
-        int predictedNumber = calculatePredictedNumber(selectedDateTime);
+        String predictedNumber = calculatePredictedNumber(android.text.format.DateFormat.format("yyyy-MM-dd HH:mm", selectedDateTime).toString().substring(11));
 
         // Display the predicted number in the TextView
         String predictedNumString = "Predicted Number: " + predictedNumber;
@@ -133,11 +138,40 @@ public class Feature2Fragment extends Fragment {
     }
 
     // A placeholder method for calculating the predicted number (replace with logic)
-    private int calculatePredictedNumber(Calendar selectedDateTime) {
-        int min = 20;
-        int max = 100;
+    private String calculatePredictedNumber(String selectedDateTime) {
+        try {
+            // Specify the URL you want to send the GET request to
+            String url = "http://localhost:8000/feature2?time_param="+selectedDateTime;
 
-        Random random = new Random();
-        return random.nextInt((max - min) + 1) + min;
+            // Create a URL object
+            URL obj = new URL(url);
+
+            // Open a connection to the URL
+            HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+
+            // Set the HTTP method to GET
+            connection.setRequestMethod("GET");
+
+            // Get the response code
+            int responseCode = connection.getResponseCode();
+            System.out.println("Response Code: " + responseCode);
+
+            // Read the response from the server
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            // Print the response
+            System.out.println("Response: " + response);
+            return response.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "error";
+        }
     }
 }
