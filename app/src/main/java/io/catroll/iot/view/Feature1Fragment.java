@@ -122,6 +122,7 @@ public class Feature1Fragment extends Fragment {
         TextView nop = view.findViewById(R.id.nop);
         new Thread(() -> {
             while (true) {
+                Log.d(TAG, "feature 1 real time: getting NOP");
                 String nopUrl = "http://" + Config.IP_PORT + "/nop";
                 Request nopRequest = new Request.Builder()
                         .url(nopUrl)

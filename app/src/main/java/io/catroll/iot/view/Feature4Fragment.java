@@ -55,11 +55,11 @@ public class Feature4Fragment extends Fragment {
         String[] v = new String[]{"sampleV"};
         String[] m = new String[]{"sampleM"};
         boolean[] a = new boolean[]{false};
-        String[] w = new String[]{"10min"};
+        String[] w = new String[]{"sampleW"};
         try (Response response = client.newCall(request).execute()) {
             String s = response.body().string();
             // Handle the response here
-            Log.d(TAG, "onCreateView: " + s);
+            Log.d(TAG, "feature 4: " + s);
             JSONObject jsonObject = new JSONObject(s);
             JSONArray vJson = jsonObject.getJSONArray("vendors");
             JSONArray mJson = jsonObject.getJSONArray("menu");
@@ -79,7 +79,7 @@ public class Feature4Fragment extends Fragment {
             }
             w = new String[wJson.length()];
             for (int i = 0; i < wJson.length(); i++) {
-                a[i] = wJson.getBoolean(i);
+                w[i] = wJson.getString(i);
             }
         } catch (Exception e) {
             Log.e(TAG, "feature 4: cannot get data." );
