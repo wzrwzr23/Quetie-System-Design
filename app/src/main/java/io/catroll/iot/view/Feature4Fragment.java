@@ -52,9 +52,9 @@ public class Feature4Fragment extends Fragment {
         Request request = new Request.Builder()
                 .url(url)
                 .build();
-        String[] v = null;
-        String[] m = null;
-        boolean[] a = null;
+        String[] v = new String[]{"sampleV"};
+        String[] m = new String[]{"sampleM"};
+        boolean[] a = new boolean[]{false};
         try (Response response = client.newCall(request).execute()) {
             String s = response.body().string();
             // Handle the response here
@@ -76,7 +76,7 @@ public class Feature4Fragment extends Fragment {
                 a[i] = aJson.getBoolean(i);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "feature 4: cannot get data." );
         }
 
         for (int i=0; i<v.length; i++) {

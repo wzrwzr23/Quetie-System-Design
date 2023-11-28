@@ -57,8 +57,8 @@ public class Feature1Fragment extends Fragment {
         Request request = new Request.Builder()
                 .url(url)
                 .build();
-        String[] dates = null;
-        int[] people = null;
+        String[] dates = new String[]{"2020-01-01 11:45"};
+        int[] people = new int[]{55};
         try (Response response = client.newCall(request).execute()) {
             String s = response.body().string();
             // Handle the response here
@@ -75,7 +75,7 @@ public class Feature1Fragment extends Fragment {
                 people[i] = ppl.getInt(i);
             }
         } catch (Exception e) {
-            Log.e(TAG, "onCreateView: ", e);
+            Log.e(TAG, "feature 1: cannot get data." );
         }
 
         String[] formattedDates = convertDateTimeArray(dates);
