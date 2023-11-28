@@ -3,6 +3,7 @@ package io.catroll.iot.view;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -18,6 +20,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,6 +34,9 @@ import java.util.Random;
 
 import io.catroll.iot.R;
 import io.catroll.iot.task.Config;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class Feature2Fragment extends Fragment {
     private Button chooseDateTimeButton;
@@ -36,6 +44,7 @@ public class Feature2Fragment extends Fragment {
     private TextView selectedStallTextView;
     private TextView selectedDateTimeTextView; // Added TextView for selected date and time
     private Spinner stallSpinner;
+    private ProgressBar loadingProgressBar;
 
     @Nullable
     @Override
@@ -50,6 +59,7 @@ public class Feature2Fragment extends Fragment {
         predictedNumberTextView = view.findViewById(R.id.predictedNumberTextView);
         selectedStallTextView = view.findViewById(R.id.selectedStallTextView);
         selectedDateTimeTextView = view.findViewById(R.id.selectedDateTimeTextView); // Initialize the TextView for selected date and time
+        loadingProgressBar = view.findViewById(R.id.loadingProgressBar);
 
         // Set up the Spinner with your list of stalls
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -139,38 +149,21 @@ public class Feature2Fragment extends Fragment {
     }
 
     private String calculatePredictedNumber(String selectedDateTime) {
-        try {
-            // Specify the URL you want to send the GET request to
-            String url = "http://" + Config.IP_PORT + "/feature2?time_param="+selectedDateTime;
-
-            // Create a URL object
-            URL obj = new URL(url);
-
-            // Open a connection to the URL
-            HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
-
-            // Set the HTTP method to GET
-            connection.setRequestMethod("GET");
-
-            // Get the response code
-            int responseCode = connection.getResponseCode();
-            Log.d("response_code", "Response Code: " + responseCode);
-
-            // Read the response from the server
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String inputLine;
-            StringBuilder response = new StringBuilder();
-
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-
-            // Print the response
-            System.out.println("Response: " + response);
-            return response.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        OkHttpClient client = new OkHttpClient();
+        // Specify the URL you want to send the GET request to
+        String url = "http://" + Config.IP_PORT + "/feature2?time_param="+selectedDateTime;
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            String s = response.body().string();
+            // Handle the response here
+            Log.d("feat2_get_try", "onCreateView: " + s);
+            return s;
+        } catch (Exception e) {
+            Log.e("feat2_error", "feature 2: cannot get data." );
             return "error";
         }
     }
