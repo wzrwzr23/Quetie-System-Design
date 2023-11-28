@@ -76,6 +76,9 @@ public class CatalogueAdapter extends
             );
             TextView textView = dialog.findViewById(R.id.text_dishes);
             textView.setText(product.getDishes());
+
+            TextView wView = dialog.findViewById(R.id.text_waiting_time);
+            wView.setText(product.getW());
             dialog.show();
         });
     }

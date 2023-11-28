@@ -55,6 +55,7 @@ public class Feature4Fragment extends Fragment {
         String[] v = new String[]{"sampleV"};
         String[] m = new String[]{"sampleM"};
         boolean[] a = new boolean[]{false};
+        String[] w = new String[]{"10min"};
         try (Response response = client.newCall(request).execute()) {
             String s = response.body().string();
             // Handle the response here
@@ -63,6 +64,7 @@ public class Feature4Fragment extends Fragment {
             JSONArray vJson = jsonObject.getJSONArray("vendors");
             JSONArray mJson = jsonObject.getJSONArray("menu");
             JSONArray aJson = jsonObject.getJSONArray("availability");
+            JSONArray wJson = jsonObject.getJSONArray("avg_waiting_time");
             v = new String[vJson.length()];
             for (int i = 0; i < vJson.length(); i++) {
                 v[i] = vJson.getString(i);
@@ -75,12 +77,16 @@ public class Feature4Fragment extends Fragment {
             for (int i = 0; i < aJson.length(); i++) {
                 a[i] = aJson.getBoolean(i);
             }
+            w = new String[wJson.length()];
+            for (int i = 0; i < wJson.length(); i++) {
+                a[i] = wJson.getBoolean(i);
+            }
         } catch (Exception e) {
             Log.e(TAG, "feature 4: cannot get data." );
         }
 
         for (int i=0; i<v.length; i++) {
-            pList.add(new Product(v[i], loadDrawableFromAssets(view.getContext(), (i+1)+".jpg"), m[i], a[i]));
+            pList.add(new Product(v[i], loadDrawableFromAssets(view.getContext(), (i+1)+".jpg"), m[i], a[i], w[i]));
         }
 
 
@@ -95,7 +101,7 @@ public class Feature4Fragment extends Fragment {
         try (InputStream is = context.getAssets().open(fileName)) {
             return Drawable.createFromStream(is, null);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "loadDrawableFromAssets: ");
             return null;
         }
     }

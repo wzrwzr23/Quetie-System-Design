@@ -130,17 +130,15 @@ public class Feature1Fragment extends Fragment {
                 try (Response response = client.newCall(nopRequest).execute()) {
                     String s = response.body().string();
                     // Handle the response here
-                    getActivity().runOnUiThread(() -> {
-                        nop.setText(s);
-                    });
+                    getActivity().runOnUiThread(() -> nop.setText(s));
                 } catch (Exception e) {
-                    Log.e(TAG, "onCreateView: ", e);
+                    Log.e(TAG, "feature 1 real time: cannot get data");
                 }
 
                 try {
                     Thread.sleep(5000);
                 } catch (InterruptedException e) {
-                    Log.e(TAG, "onCreateView: ", e);
+                    Log.e(TAG, "feature 1 real time: cannot sleep");
                 }
             }
         }).start();
