@@ -186,7 +186,7 @@ def feature4(item: dict):
         cursor.close()
         conn.close()
         return status.HTTP_200_OK
-
+    
     except ValueError:
         raise HTTPException(status_code=400)    
 
