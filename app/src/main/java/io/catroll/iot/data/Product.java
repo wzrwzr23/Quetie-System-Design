@@ -10,6 +10,7 @@ public class Product {
     private final String dishes;
     private final boolean avail;
     private final String w;
+    private final String c;
 
     public String getName() {
         return name;
@@ -29,13 +30,15 @@ public class Product {
     public String getW() {
         return this.w;
     }
+    public String getC(){return c;}
 
-    public Product(String name, Drawable imageSrc, String dishes, boolean avail, String w) {
+    public Product(String name, Drawable imageSrc, String dishes, boolean avail, String w,String c) {
         this.name = name;
         this.imageSrc = imageSrc;
         this.dishes = dishes;
         this.avail = avail;
         this.w = w
                 ;
+        this.c=c;
     }
 }

@@ -79,6 +79,9 @@ public class CatalogueAdapter extends
 
             TextView wView = dialog.findViewById(R.id.text_waiting_time);
             wView.setText(product.getW());
+
+            TextView cView = dialog.findViewById(R.id.text_estimated_customer);
+            cView.setText(product.getC());
             dialog.show();
         });
     }
