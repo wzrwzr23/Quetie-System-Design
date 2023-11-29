@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">IoT</string>
+    <string name="app_name">Quetie!</string>
     <string name="predicted_number_0">Predicted Number: 0</string>
     <string name="choose_date_and_time">Choose Date and Time</string>
     <string name="selected_date_time_placeholder">"Selected date and time is: "</string>
+    <string name="toolbar_title">When do you want to eat?:)</string>
 </resources>
