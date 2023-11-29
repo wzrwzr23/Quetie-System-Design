@@ -38,7 +38,6 @@ public class Feature2Fragment extends Fragment {
         Button chooseDateTimeButton = view.findViewById(R.id.chooseDateTimeButton);
         predictedNumberTextView = view.findViewById(R.id.predictedNumberTextView);
         selectedDateTimeTextView = view.findViewById(R.id.selectedDateTimeTextView);
-
         chooseDateTimeButton.setOnClickListener(v -> showDateTimePicker());
         return view;
     }
