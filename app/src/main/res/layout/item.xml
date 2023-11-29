@@ -4,7 +4,7 @@
     style="?attr/materialCardViewFilledStyle"
     android:layout_width="match_parent"
     android:layout_height="130dp"
-    android:layout_margin="3dp"
+    android:layout_margin="6dp"
     android:clickable="true"
     android:focusable="true">
 
