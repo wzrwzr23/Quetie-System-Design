@@ -1,5 +1,6 @@
 package io.catroll.iot.view;
 
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -24,6 +25,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -45,6 +47,7 @@ public class Feature1Fragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_feature_1, container, false);
         LineChart chart = view.findViewById(R.id.line_chart);
 
@@ -131,8 +134,19 @@ public class Feature1Fragment extends Fragment {
                 try (Response response = client.newCall(nopRequest).execute()) {
                     String s = response.body().string();
                     // Handle the response here
-                    getActivity().runOnUiThread(() -> nop.setText(s));
-                } catch (Exception e) {
+                    getActivity().runOnUiThread(() -> {
+                        nop.setText(s);
+                        if (s.contains("Internal")) {
+                            nop.setTextColor(Color.RED);
+                        } else {
+                            if (Integer.parseInt(s) > 100) {
+                                nop.setTextColor(Color.RED);
+                            } else {
+                                nop.setTextColor(Color.GREEN);
+                            }
+                        }
+                    });
+                } catch (IOException e) {
                     Log.e(TAG, "feature 1 real time: cannot get data");
                 }
 
