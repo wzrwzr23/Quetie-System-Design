@@ -46,6 +46,13 @@ public class Feature2Fragment extends Fragment {
 
     private void handleDateTimeSelection(Calendar selectedDateTime) {
         String dayOfWeek = Integer.toString(selectedDateTime.get(Calendar.DAY_OF_WEEK));
+
+        if (dayOfWeek.equals("1")){
+            dayOfWeek = "7";
+        }else{
+            dayOfWeek = Integer.toString(selectedDateTime.get(Calendar.DAY_OF_WEEK)-1);
+        }
+        Log.d("dayofweek", dayOfWeek);
         String formattedDateTime = "Selected Date and Time: " + android.text.format.DateFormat.format("yyyy-MM-dd HH:mm", selectedDateTime).toString();
 
         // Display the selected date and time in the TextView
