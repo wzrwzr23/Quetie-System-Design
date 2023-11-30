@@ -44,61 +44,65 @@ public class Feature4Fragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_feature_4, container, false);
 
         List<Product> pList = new ArrayList<>();
-
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        OkHttpClient client = new OkHttpClient();
-        String url = "http://" + Config.IP_PORT + "/feature4";
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-        String[] v = new String[]{"sampleV"};
-        String[] m = new String[]{"sampleM"};
-        boolean[] a = new boolean[]{false};
-        String[] w = new String[]{"sampleW"};
-        String [] c = new String[]{"sampleC"};
-        try (Response response = client.newCall(request).execute()) {
-            String s = response.body().string();
-            // Handle the response here
-            Log.d(TAG, "feature 4: " + s);
-            JSONObject jsonObject = new JSONObject(s);
-            JSONArray vJson = jsonObject.getJSONArray("vendors");
-            JSONArray mJson = jsonObject.getJSONArray("menu");
-            JSONArray aJson = jsonObject.getJSONArray("availability");
-            JSONArray wJson = jsonObject.getJSONArray("avg_waiting_time");
-            JSONArray cJson = jsonObject.getJSONArray("estimated_total_customers");
-            v = new String[vJson.length()];
-            for (int i = 0; i < vJson.length(); i++) {
-                v[i] = vJson.getString(i);
-            }
-            m = new String[mJson.length()];
-            for (int i = 0; i < mJson.length(); i++) {
-                m[i] = mJson.getString(i);
-            }
-            a = new boolean[aJson.length()];
-            for (int i = 0; i < aJson.length(); i++) {
-                a[i] = aJson.getBoolean(i);
-            }
-            w = new String[wJson.length()];
-            for (int i = 0; i < wJson.length(); i++) {
-                w[i] = wJson.getString(i);
-            }
-            c = new String[cJson.length()];
-            for (int i = 0; i < cJson.length(); i++) {
-                c[i] = cJson.getString(i);
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "feature 4: cannot get data." );
-        }
-
-        for (int i=0; i<v.length; i++) {
-            pList.add(new Product(v[i], loadDrawableFromAssets(view.getContext(), (i+1)+".jpg"), m[i], a[i], w[i], c[i]));
-        }
-
-
         catalogueRecyclerView = view.findViewById(R.id.rv_catalogue);
-        catalogueRecyclerView.setAdapter(new CatalogueAdapter(pList));
+        catalogueRecyclerView.setVisibility(View.GONE);
+        CatalogueAdapter adapter = new CatalogueAdapter(pList);
+        catalogueRecyclerView.setAdapter(adapter);
         catalogueRecyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 2, GridLayoutManager.VERTICAL, false));
+
+        new Thread(() -> {
+            OkHttpClient client = new OkHttpClient();
+            String url = "http://" + Config.IP_PORT + "/feature4";
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+            String[] v = new String[]{"sampleV"};
+            String[] m = new String[]{"sampleM"};
+            boolean[] a = new boolean[]{false};
+            String[] w = new String[]{"sampleW"};
+            String [] c = new String[]{"sampleC"};
+            try (Response response = client.newCall(request).execute()) {
+                String s = response.body().string();
+                // Handle the response here
+                Log.d(TAG, "feature 4: " + s);
+                JSONObject jsonObject = new JSONObject(s);
+                JSONArray vJson = jsonObject.getJSONArray("vendors");
+                JSONArray mJson = jsonObject.getJSONArray("menu");
+                JSONArray aJson = jsonObject.getJSONArray("availability");
+                JSONArray wJson = jsonObject.getJSONArray("avg_waiting_time");
+                JSONArray cJson = jsonObject.getJSONArray("estimated_total_customers");
+                v = new String[vJson.length()];
+                for (int i = 0; i < vJson.length(); i++) {
+                    v[i] = vJson.getString(i);
+                }
+                m = new String[mJson.length()];
+                for (int i = 0; i < mJson.length(); i++) {
+                    m[i] = mJson.getString(i);
+                }
+                a = new boolean[aJson.length()];
+                for (int i = 0; i < aJson.length(); i++) {
+                    a[i] = aJson.getBoolean(i);
+                }
+                w = new String[wJson.length()];
+                for (int i = 0; i < wJson.length(); i++) {
+                    w[i] = wJson.getString(i);
+                }
+                c = new String[cJson.length()];
+                for (int i = 0; i < cJson.length(); i++) {
+                    c[i] = cJson.getString(i);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "feature 4: cannot get data." );
+            }
+
+            for (int i=0; i<v.length; i++) {
+                pList.add(new Product(v[i], loadDrawableFromAssets(view.getContext(), (i+1)+".jpg"), m[i], a[i], w[i], c[i]));
+            }
+
+            getActivity().runOnUiThread(() -> {
+                adapter.notifyItemRangeInserted(0, pList.size());
+            });
+        }).start();
 
         return view;
     }
