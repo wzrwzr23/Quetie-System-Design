@@ -101,6 +101,7 @@ public class Feature4Fragment extends Fragment {
 
             getActivity().runOnUiThread(() -> {
                 adapter.notifyItemRangeInserted(0, pList.size());
+                catalogueRecyclerView.setVisibility(View.VISIBLE);
             });
         }).start();
 
