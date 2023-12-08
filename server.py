@@ -12,11 +12,11 @@ import numpy as np
 
 server = 'trydbserver.database.windows.net'
 database = 'trydb'
-username = 'sqladmin@trydbserver.com'
-password = 'Capstone1'
+username = #username
+password = #password
 #driver= '{ODBC Driver 18 for SQL Server}'
 driver= '{ODBC Driver 18 for SQL Server}'
-connstr = 'Driver={ODBC Driver 18 for SQL Server};Server=tcp:trydbserver.database.windows.net,1433;Database=trydb;Uid=sqladmin;Pwd=Capstone1;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;'\
+connstr =#connection str
 
 app = FastAPI()
 ##curl -X GET "http://10.12.207.66:8000/feature1?date=2020-1-19"

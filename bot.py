@@ -1,5 +1,5 @@
 # Replace 'YOUR_TOKEN' with your bot's token
-TELEGRAM_TOKEN = '6902421568:AAHaVCxEOaUhFY1SaOKKoVuIs6odxtpBnZ8'
+TELEGRAM_TOKEN = #your token here
 # Replace with the URL you want to post data to
 TARGET_URL = 'http://localhost:8000/feature4/'
 
