@@ -1,5 +1,5 @@
 # Architecture Design
-[image link](https://github.com/wzrwzr23/Quetie-System-Design/blob/main/image.png)
+![Alt text](/Quetie-System-Design/blob/main/image.png "Architecture Design")
 The system comprises an Android app and a Telegram bot as frontends, both connected to a Python-based backend server. The server offers APIs for seamless access to the MySQL database from the Android app. The IoT device, equipped with a camera for image capture, serves as the primary data source.
 The IoT device communicates with the Python server, where image data is processed by a Computer Vision (CV) model. Processed data is periodically populated into the MySQL database. This structured approach enables efficient data retrieval through the Android app, forming the foundation of our IoT-Enhanced Campus Dining Solutions. This architecture supports real-time monitoring, analysis, and historical data availability for predictive analytics, contributing to effective crowd management.
 # App Features
